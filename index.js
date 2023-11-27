@@ -29,14 +29,34 @@ async function run() {
 
 
     const forumCollection = client.db("forumDB").collection('forum');
+    const userCollection = client.db("forumDB").collection('users');
 
 
-
+    // .........forum collection.......
     app.get('/forum', async (req, res) => {
       const result = await forumCollection.find().toArray();
       res.send(result);
     })
 
+
+
+    // ........user colleciton ........
+    app.get('/users', async (req, res) => {
+      const result = await userCollection.find().toArray();
+      res.send(result);
+    });
+
+
+    app.post('/users', async (req, res) => {
+      const user = req.body;
+      const query = { email: user.email }
+      const existingUser = await userCollection.findOne(query);
+      if (existingUser) {
+        return res.send({ message: 'user already exists', insertedId: null })
+      };
+      const result = await userCollection.insertOne(user);
+      res.send(result);
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
