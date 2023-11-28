@@ -38,6 +38,11 @@ async function run() {
       res.send(result);
     })
 
+    app.post('/forum', async (req, res) => {
+      const forum = req.body;
+      const result = await forumCollection.insertOne(forum);
+      res.send(result);
+    })
 
 
     // ........user colleciton ........
@@ -45,6 +50,8 @@ async function run() {
       const result = await userCollection.find().toArray();
       res.send(result);
     });
+
+
 
 
     app.post('/users', async (req, res) => {
