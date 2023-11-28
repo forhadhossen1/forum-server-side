@@ -30,6 +30,7 @@ async function run() {
 
     const forumCollection = client.db("forumDB").collection('forum');
     const userCollection = client.db("forumDB").collection('users');
+    const announcementCollection = client.db("forumDB").collection('announcements');
 
 
     // .........forum collection.......
@@ -65,6 +66,22 @@ async function run() {
       res.send(result);
     });
 
+
+
+    // .......announcements  colleciton....... 
+
+    app.get('/announcements', async (req, res) => {
+      const result = await announcementCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.post('/announcements', async (req, res) => {
+      const announcement = req.body;
+      const result = await announcementCollection.insertOne(announcement);
+      res.send(result);
+    });
+
+    
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
