@@ -26,12 +26,13 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
 
     const forumCollection = client.db("forumDB").collection('forum');
     const userCollection = client.db("forumDB").collection('users');
     const announcementCollection = client.db("forumDB").collection('announcements');
+    const commentCollection = client.db("forumDB").collection('comment');
 
 
     //  jwt related api
@@ -177,6 +178,12 @@ async function run() {
       res.send(result);
     })
 
+    // comment related api ... 
+    app.post('/comment', verifyToken, async (req, res) => {
+      const commnet = req.body;
+      const result = await commentCollection.insertOne(commnet);
+      res.send(result);
+    })
 
 
     // Send a ping to confirm a successful connection
