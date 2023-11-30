@@ -75,6 +75,13 @@ async function run() {
       res.send(result);
     })
 
+    app.get('/forum/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await forumCollection.findOne(query);
+      res.send(result);
+    })
+
     app.post('/forum', verifyToken, async (req, res) => {
       const forum = req.body;
       const result = await forumCollection.insertOne(forum);
@@ -150,16 +157,23 @@ async function run() {
       res.send(result);
     });
 
-    app.post('/announcements',verifyToken, verifyAdmin, async (req, res) => {
+    app.post('/announcements', verifyToken, verifyAdmin, async (req, res) => {
       const announcement = req.body;
       const result = await announcementCollection.insertOne(announcement);
       res.send(result);
     });
 
+    app.get('/announcements/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await announcementCollection.findOne(query);
+      res.send(result);
+    })
+
     app.delete('/announcements/:id', verifyToken, verifyAdmin, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
-      const result = await userCollection.deleteOne(query);
+      const result = await announcementCollection.deleteOne(query);
       res.send(result);
     })
 
